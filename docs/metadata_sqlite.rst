@@ -2,18 +2,21 @@ SQLite metadata
 ===============
 
 This page describes the state of the metadata for all samples as of
-2024-08-01.  It is collated into an SQLite database.
+2025-05-06.  It is collated into an SQLite database.
+There also an SQLite database available for the state of AllTheBacteria
+up to and including incremental release 2024-08.
 
 This is very detailed; if you just want simple flat files, then
 please see the :doc:`Metadata and QC </sample_metadata>` page.
 
-The SQLite database is in the file
-``atb.metadata.202408.sqlite.xz``, available from OSF at:
+
+The 202505 SQLite database is in the file
+``atb.metadata.202505.sqlite.xz``, available from OSF at:
 https://osf.io/f9jeh
 
 Download in a terminal with::
 
-    wget -O atb.metadata.202408.sqlite.xz https://osf.io/download/f9jeh/
+    wget -O atb.metadata.202505.sqlite.xz https://osf.io/download/f9jeh/
 
 
 It has:
@@ -28,15 +31,15 @@ The details here are important and quite complicated, and there are
 many different cases to consider within the metadata.
 We recommend you read this whole page carefully
 if you want to fully understand the how we processed the samples in
-release 0.2 and incremental release 202408.
+release 0.2, incremental release 2024-08, and incremental release 202505.
 
-Note that the SQLite file ``atb.metadata.202408.sqlite.xz`` on OSF is compressed
-in xz format, and is approximately 1.5GB.
-It will need to be decompressed to use it, with a size of around 17GB.
+Note that the SQLite file ``atb.metadata.202505.sqlite.xz`` on OSF is compressed
+in xz format, and is approximately 2G.
+It will need to be decompressed to use it, with a size of around 27G.
 
 
-Background
-----------
+Background up to release 2024-08
+--------------------------------
 
 AllTheBacteria is an extension of the 2021 "661k" project from Blackwell et al:
 we started with the set of samples/assemblies used in the 661k.
@@ -65,7 +68,7 @@ sample it links to, or FASTQ files (and therefore md5sum) can change.
 And at the same time, the last updated field can remain constant.
 This complicates things, especially
 as we discovered the changeable nature of the metadata
-after releasing the incremental release 202408.
+after releasing the incremental release 2024-08.
 
 The SQLite database gathers all this information together, and includes
 a summary table of all known samples. This documents whether each
@@ -77,15 +80,39 @@ We have been intentionally paranoid, preferring to flag up anything unusual
 at the expense of potentially rejecting  more samples than is necessary.
 
 This analysis does not redefine either release 0.2 or incremental release
-202408. These assemblies are all still available from OSF and AWS. No
+2024-08. These assemblies are all still available from OSF and AWS. No
 assemblies have been added or removed. However, we now
 identify samples that were not previously flagged, because
 the new checks are more stringent. In particular, one reason for this is
 failing to accession an assembly in the ENA. The ENA rejects a submission
 if the sample's metadata fails various checks. This is out of our control,
 meaning that there are assemblies in release 0.2 and/or
-incremental release 202408 that are not in the ENA, and only available from
+incremental release 2024-08 that are not in the ENA, and only available from
 OSF and AWS.
+
+Background for release 2025-05
+------------------------------
+
+Incremental release takes AllTheBacteria up to date as of the metadata in the
+ENA on 2025-05-06.
+
+Essentially the same process as above was used for incremental release 2025-05.
+We started with the state of the project as of incremental release 2024-08, and
+processed new samples monthly. ENA metadata was retrieved on the dates
+2024-09-13, 2024-10-07, 2024-11-01, 2024-12-17, 2025-01-08, 2025-02-03,
+2025-03-04, 2025-04-04, and 2025-05-06.
+New runs/samples that passed all the metadata checks were processed through
+the assembly pipeline.
+
+To be included in the incremental release 2025-05, a sample/run must be in
+2025-05-06 (as well as the from the data it was first retrieved), and
+metadata must pass all the checks and be consistent across all sets of
+metadata. For example, a sample could have been
+processed in the 2024-10-07 batch. To be included in incremental release 2025-05
+it must also be in the 2025-05-06 ENA metadata, with the metadata consistent
+between 2024-10-07 and  2025-05-06. If that sample was not in 2025-05-06 (samples
+get suppressed) or for example the md5 of the run fastq files changed, then
+it would not be included in release 2025-05.
 
 
 Metadata checks
@@ -115,12 +142,28 @@ SQLite database
 ENA metadata tables
 ^^^^^^^^^^^^^^^^^^^
 
-There are three ENA metadata tables in the database: ``ena_661k``,
-``ena_20240625`` and ``ena_20240801``.
-The ``ena_20240625`` and ``ena_20240801`` tables are unedited dumps
+There are five ENA metadata tables in the database:
+
+* ``ena_20240625``
+* ``ena_20240801``
+* ``ena_20250506``
+* ``ena_202505_used``
+* ``ena_661k``
+
+The ``ena_20240625``, ``ena_20240801``, ``ena_20250506`` tables are unedited dumps
 of all bacteria sequencing runs from the ENA. The query used was::
 
     curl -Ss "https://www.ebi.ac.uk/ena/portal/api/search?result=read_run&fields=ALL&query=tax_tree(2)&format=tsv"
+
+The table ``ena_202505_used`` is a record of the metadata for each sample/run
+from release 2025-05 from when it was retrieved as part of the
+monthly processing, ie a record from one of the dates
+2024-09-13, 2024-10-07, 2024-11-01, 2024-12-17, 2025-01-08, 2025-02-03,
+2025-03-04, 2025-04-04, or 2025-05-06.
+The columns are the same as in the other unedited dumps from the ENA
+(``ena_20240625``, ``ena_20240801``, ``ena_20250506``), but with the column
+``obtained_date`` added, which is the date when the record was retrieved
+from the ENA.
 
 
 The 661k supplementary files are here on Figshare:
@@ -144,8 +187,8 @@ Run table
 ^^^^^^^^^
 
 The SQLite database has a table ``run`` containing
-all 3,114,241 runs found in at least one of
-the three ENA metadata tables.
+all 3,530,513 runs found in at least one of
+the ENA metadata tables.
 It is a summary of pass/fail of the metadata checks, and which of the
 ENA tables the run was found in.
 
@@ -159,6 +202,10 @@ The columns are:
   table
 * ``in_ena_20240801``: ``0`` or ``1`` to show if this run is in the ``ena_20240801``
   table
+* ``in_ena_20250506``: ``0`` or ``1`` to show if this run is in the ``ena_20250506``
+  table
+* ``ena_202505_batch``: for runs that are in ``ena_202505_used``,
+  the batch/date of when the metadata was retrieved
 * ``fastq_md5``: if known, the ``fastq_md5`` entry from ENA metadata. Some FASTQ
   files have changed, in which case this says "multiple" instead of a list of
   different md5 sums (we don't want to use these runs anyway)
@@ -176,7 +223,7 @@ A run will have ``pass`` = ``0`` if one (or more) of the following is true:
 * The run fails one or both of ``meta_pass_atb``, ``meta_pass_661k``
 * The run matches more than one sample
 * The sample that the run matches changed between ENA metadata tables
-* It is not in the 20240801 ENA metadata - ie it used to be available, but
+* It is not in the 20250506 ENA metadata - ie it used to be available, but
   now it is unavailable
 * One or more of the values of ``fastq_md5``, ``fastq_bytes``, ``base_count``
   has changed between ENA metadata tables. Changed values are common in many
@@ -192,6 +239,8 @@ contains the union all samples found in the table ``runs`` and all
 processed samples in AllTheBacteria releases.
 There were samples obtained in 2023 (and assembled and included in release 0.2)
 that do not appear in the ENA data dumps 20240625 or 20240801.
+Similarly, there are samples that are in older releases that do not appear
+in ENA dumps used for incremental release 2025-05.
 
 The columns of the table are:
 
@@ -206,12 +255,13 @@ The columns of the table are:
 * ``filter``: a list of filters that this sample fails, or ``PASS`` if it passed
   all filters (similar to how the VCF filter column works). This reflects the
   new filters, not those used initially to find samples to process. This means
-  a sample could be in the 661k, release 0.2 or incremental release 202408
+  a sample could be in the 661k, release 0.2 or incremental releases
   but not have ``PASS`` in this column.
 * ``asm_fasta_on_osf``: ``0`` or ``1`` to indicate if an assembly FASTA file
   of this sample is available on OSF (and also AWS).
   This corresponds exactly to the assemblies in
-  release 0.2 plus incremental release 202408. See comments for the ``filter``
+  release 0.2 plus incremental releases 2024-08, 2025-05.
+  See comments for the ``filter``
   column - a sample could fail the filter, but still have ``1`` in this column.
 * ``dataset``: the dataset to which the sample belongs.
   Note: release 0.2 includes all of the 661k assemblies.
@@ -219,6 +269,22 @@ The columns of the table are:
   which samples are in the 661k data set. Meaning that "r0.2" in this field
   means the sample is in release 0.2 but is not in the 661k set. Samples in the
   original 661k set have "661k" in this column.
+* ``sylph_species``: this is a species call from running sylph on the reads,
+  using the method described in the :doc:`Species Identification </species_id>`
+  page.
+* ``sylph_filter``: either PASS or a reason why the run(s) for this sample
+  failed getting a species. Fails could be: ``MULTIPLE`` where there is
+  more than one species call that passed the filters;
+  ``NO_SYLPH_RESULTS`` where sylph gave no output;
+  ``SYLPH_RESULTS_FAIL`` where no sylph calls passed the filters.
+* ``scientific_name``: the ENA metadata `scientific name`. Some samples have
+  more than one run, and runs could have different entries, in which case
+  this is a semicolon-separated list. See also
+  the :doc:`Species Identification </species_id>` page.
+* ``osf_tarball_filename``: the filename of the ``*.tar.xz`` file on OSF that
+  contains the assembly FASTA file
+* ``osf_tarball_url``: the URL of the ``*.tar.xz`` file on OSF
+* ``aws_url``: the AWS URL of the assembly FASTA file
 * ``comments``: any comments related to reasons for filter fails.
 
 
@@ -244,8 +310,11 @@ pipeline. The filters are:
 
 * ``ASM_DLR``: downloading the reads failed.
 * ``ASM_SYL``: sylph failed. This is actually because the downloaded
-  FASTQ files are truncated (despite having the correct md5 sum) and causes
-  sylph to crash. In future, the pipeline checks for this by checking that
+  FASTQ files are truncated - despite having the correct md5 sum - and causes
+  sylph to crash. This is in older (before 2025-05) files, and has since
+  been replaced with ``ASM_FQ_GZIP``.
+* ``ASM_FQ_GZIP``: At least one of the downloaded run files has a truncated
+  FASTQ file, despite having the expected md5sum.
   FASTQ files are valid gzip files.
 * ``ASM_SHV``: shovill failed.
 * ``ASM_LEN``: the assembly is too long or short.
@@ -276,7 +345,7 @@ the most common are:
 
 
 There is also the filter ``NOT_PROCESSED``, which is for samples that
-are not in release 0.2 or incremental release 202408.
+are not in release 0.2 or incremental release 2024-08.
 There are some samples that do pass all the metadata checks, but were not
 processed. These will be processed in a future release of AllTheBacteria.
 The main reason is that we discovered a bug in the Python script that parses
@@ -331,13 +400,13 @@ Example SQLite queries
 ----------------------
 
 Get all samples that have an assembly on OSF/AWS, ie this is
-release 0.2 (which includes 661k) and incremental release 202408::
+release 0.2 (which includes 661k) and incremental releases 2024-08, 2025-05::
 
     SELECT * FROM assembly WHERE asm_fasta_on_osf=1;
 
 
 Get the sample and ENA assembly accessions of all samples in incremental
-release 202408 that have an ENA accession::
+release 2024-08 that have an ENA accession::
 
     SELECT sample_accession,assembly_accession
     FROM assembly

@@ -4,14 +4,21 @@ Overview
 Current status
 --------------
 
-Date updated: 2024-09-24.
+Date updated: 2025-06-30.
 
 Bacteria:
 
-* the latest release is incremental release 2024-08
+* the latest release is incremental release 2025-05
 
-* total assemblies = 2,440,377
-  (1,932,812 in release 0.2, plus 507,565 in incremental release 2024-08)
+* total assemblies = 2,763,297
+
+    * Release 0.2: 1,932,812 (661,384 in the original 661k dataset, plus
+      1,271,428 new assemblies)
+
+    * Incremental release 2024-08: 507,565
+
+    * Incremental release 2025-05: 322,920
+
 
 Archaea:
 
@@ -111,8 +118,16 @@ August 2024 update
 After release 0.2, we processed all new data up to August 2024,
 and released these new 507,566 assemblies with the name "incremental release
 2024-08". It is called "incremental" because it only contains the new
-assemblies. This means that the complete AllTheBacteria dataset is
-release 0.2 plus incremental release 2024-08.
+assemblies.
+
+
+May 2025 update
+~~~~~~~~~~~~~~~
+
+New samples/runs were processed adter incremental release 2024-08, making
+incremental release 2025-05.
+This means that the complete AllTheBacteria dataset is
+release 0.2 plus incremental releases 2024-08 and 2025-05.
 
 
 Future releases
@@ -120,6 +135,6 @@ Future releases
 
 The plan is that any future releases will be "incremental", meaning they will
 be new samples only, adding in anything new since the last incremental
-release 2024-08.
+release 2025-05.
 
 
