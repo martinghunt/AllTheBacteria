@@ -56,6 +56,32 @@ SAMD00107093	ecoli_achtman_4	10	adk(10),fumC(11),gyrB(4),icd(8),mdh(8),purA(8),r
 ```
 
 
+
+## ECTYPER
+
+Genomes were typed using [ECTyper](https://github.com/phac-nml/ecoli_serotyping).
+
+ECTyper was installed using `pixi`. 
+
+ECTyper was run with `--verify --pathotype` flags:
+
+* ``--verify`` will verify species (i.e. if sample is E.coli) and run QC module providing information on the reliability and suitability of the serotyping and pathotyping results as a function of predicted species.	 
+* ``--pathotype`` will perform DEC pathotype and Shiga toxin subtyping prediction on a sample.
+
+As such, ECTyper results will include serotype, pathotype, and species classification. For more information about ECTyper [please see the paper](https://www.microbiologyresearch.org/content/journal/mgen/10.1099/mgen.0.000728).
+
+ECTyper was run on our HPC cluster, and jobs and results were handled by my dodgy python script. For completness, this is included here under [dodgy_scripts/ectyper.py](dodgy_scripts/ectyper.py). This script is not intended for public consumption. 
+
+**Results:**
+
+| File/Resource                                                                | Description                                                                  |
+|------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| [Manifest (tab-delimited)](https://osf.io/un6ts)                             | Status (PASS, FAIL, NOT DONE) for each genome; manifest of included genomes. |
+| [Raw ECTYPER results table](https://osf.io/pbd8x)                            | Unmodified, merged results table output from ECTYPER software.               |
+| [BLAST ECTYPER results table](https://osf.io/x6jva)                          | Unmodified, merged BLAST hits table output from ECTYPER software.            |
+| [ECTYPER results for *E. coli* (tab-delimited)](https://osf.io/tx5m6)        | Final processed ECTYPER results                                              |
+
+
 ## Contact
 
 For questions regarding *E. coli* typing, please contact [Nabil-Fareed Alikhan](mailto:nabil@happykhan.com).
