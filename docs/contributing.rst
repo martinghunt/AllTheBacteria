@@ -88,8 +88,15 @@ This should get picked up by one of the admins, who will:
   project <https://github.com/orgs/AllTheBacteria/projects/1/views/1>`_,
   linked to the GitHub issue you created.
 * Reply to the issue with the link to an OSF project component, which is where
-  the final analysis files will be shared. You will need to log into OSF and
-  request access to that component, so that you can upload your files later.
+  the final analysis files will be shared.
+
+You will need to give us your OSF account ID, so we can add you
+to the new OSF project component. The ID can be found by
+logging into OSF, clicking on your name in the top right and choosing
+"My profile". At the top right of your profile page is a URL, for
+example https://osf.io/wxcdj/. This is what we need to add you to
+the project component, giving permission to add files.
+
 
 
 
