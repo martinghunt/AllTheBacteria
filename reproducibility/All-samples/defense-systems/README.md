@@ -6,7 +6,7 @@ The initial aim of this analysis was to investigate defense systems within Enter
 
 By default, DefenseFinder produces three main outputs: `*genes.tsv`, `*hmmer.tsv` and `*systems.tsv`. We have shared a single file containing the concatenated results of `*systems.tsv`. This file contains results from 1,166,303 samples with a total of 9,936,568 defense systems (mean 8.5 systems detected per sample). 
 
-## Software versions 
+## Software versions
 
 DefenseFinder relies on 'models', consisting of HMMs for detecting hits then definitions/rules for calling systems as present. We used:
 
