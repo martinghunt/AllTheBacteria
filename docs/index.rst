@@ -27,6 +27,7 @@ https://github.com/AllTheBacteria/AllTheBacteria/issues
    species_id
    annotation
    amr
+   defense
    bgcs
    typing
    archaea
