@@ -1,5 +1,5 @@
 #!/usr/bin/bash -l
-#SBATCH -A projectname
+#SBATCH -A cluster_projectID
 #SBATCH --time=01:00:00
 #SBATCH -N 1 -c 28
 #SBATCH -J ATB_btyper3
