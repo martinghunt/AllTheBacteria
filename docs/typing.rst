@@ -6,6 +6,11 @@ Summary
 
 All `sylph <https://github.com/bluenote-1577/sylph>`_-identified genomes from `AllTheBacteria <https://allthebacteria.readthedocs.io/en/latest/>`_ ``0.2`` and ``incremental release 2024-08`` were typed using various tools
 
+*Bacillus cereus* group spp.
+
+* `BTyper3 <https://github.com/lmc297/BTyper3>`_ v3.4.0 (Standardized taxonomic classification and sequence typing, detection of virulence and Bt toxin-encoding genes)
+* Result files are available on OSF in the `Bacillus_cereus_group component <https://osf.io/8ua49/>`_.
+
 *Bordetella pertussis*
 
 * `mlst <https://github.com/tseemann/mlst>`_ schema `2024-06-10 <https://www.pubmlst.org>`_
@@ -56,3 +61,6 @@ All `sylph <https://github.com/bluenote-1577/sylph>`_-identified genomes from `A
 * `mlst <https://github.com/tseemann/mlst>`_ schema `2024-06-10 <https://www.pubmlst.org>`_
 * `emm-typer <https://github.com/MDU-PHL/emmtyper>`_ v0.2.0
 * `assembly_typer <https://github.com/boasvdp/assembly_snptyper>`_ v0.1.0 (`M1UK <https://pubmed.ncbi.nlm.nih.gov/31519541/>`_, `M1DK <https://pubmed.ncbi.nlm.nih.gov/38961826/>`_)
+
+
+
