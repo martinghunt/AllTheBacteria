@@ -113,18 +113,6 @@ we suggest you read this documentation, which has the relevant links to OSF,
 as opposed to going directly to OSF.
 
 
-Release Notes
--------------
-
-The first batch of data is available as release 0.2. From then onwards we
-intend to make "incremental" releases, which contain new samples that are
-not included in older releases. This means that if you want the complete
-results for a particular analysis, you will need release 0.2 results plus
-all later incremental releases. When it makes sense to do so, we will
-make aggregated files of all the releases (ie 0.2 plus all incremental
-releases), so that you do not need to combine results yourself.
-
-
 A brief history of AllTheBacteria
 ---------------------------------
 
@@ -141,6 +129,19 @@ AllTheBacteria extends that project, covering all data up to at least
 2024, and is ongoing. We also expand the scope, as we begin a global
 collaborative project to generate annotations for different species
 as desired by different research communities.
+
+
+
+Release Notes
+-------------
+
+The first batch of data is available as release 0.2. From then onwards we
+make "incremental" releases, which contain new samples that are
+not included in older releases. This means that if you want the complete
+results for a particular analysis, you will need release 0.2 results plus
+all later incremental releases. When it makes sense to do so, we will
+make aggregated files of all the releases (ie 0.2 plus all incremental
+releases), so that you do not need to combine results yourself.
 
 
 Releases 0.1 and 0.2
@@ -177,8 +178,8 @@ the filenames are different.
 
 
 
-August 2024 update
-~~~~~~~~~~~~~~~~~~
+Incremental Release 2024-08
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 After release 0.2, we processed all new data up to August 2024,
 and released these new 507,566 assemblies with the name "incremental release
@@ -186,8 +187,8 @@ and released these new 507,566 assemblies with the name "incremental release
 assemblies.
 
 
-May 2025 update
-~~~~~~~~~~~~~~~
+Incremental Release 2025-05
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Breaking change:** :doc:`species calls </species_id>`
 from sylph results were made more stringent
@@ -198,14 +199,5 @@ New samples/runs were processed after incremental release 2024-08, making
 incremental release 2025-05.
 This means that the complete AllTheBacteria dataset is
 release 0.2 plus incremental releases 2024-08 and 2025-05.
-
-
-
-Future releases
----------------
-
-The plan is that any future releases will be "incremental", meaning they will
-be new samples only, adding in anything new since the last incremental
-release 2025-05.
 
 
