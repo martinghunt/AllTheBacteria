@@ -1,6 +1,7 @@
 Overview
 ========
 
+
 Current status
 --------------
 
@@ -19,7 +20,7 @@ The latest release is incremental release 2025-05
   * - Release
     - Assemblies
     - Grand total
-  * - r0.2 [1]
+  * - r0.2 :sup:`1`
     - 1,932,812
     - 1,932,812
   * - Incremental 2024-08
@@ -29,7 +30,7 @@ The latest release is incremental release 2025-05
     - 322,920
     - 2,763,297
 
-.. [1] 661,384 in the original 661k Blackwell dataset, plus 1,271,428 new assemblies
+[1]: 661,384 in the original 661k Blackwell dataset, plus 1,271,428 new assemblies
 
 
 Post-assembly analysis status
@@ -51,11 +52,11 @@ Post-assembly analysis status
     - ✓
     - ✓
     - ✓
-  * - :doc:`Lexicmap index </lexicmap>` [1]
+  * - :doc:`Lexicmap index </lexicmap>` :sup:`1`
     - ✓
     - ✓
     - ✗
-  * - sketchlib index [1]
+  * - sketchlib index :sup:`1`
     - ✓
     - ✓
     - ✗
@@ -80,7 +81,7 @@ Post-assembly analysis status
     - ✓
     - ✗
 
-.. [1] The indexes are for r0.2 plus 2024-08 combined, not two separate indexes.
+[1]: The indexes are for r0.2 plus 2024-08 combined, not two separate indexes.
 
 
 
@@ -188,7 +189,8 @@ assemblies.
 May 2025 update
 ~~~~~~~~~~~~~~~
 
-**Breaking change:** species calls from sylph results were made more stringent
+**Breaking change:** :doc:`species calls </species_id>`
+from sylph results were made more stringent
 compared to previous releases. This means there are samples that had a species
 call pre-2025-05, but now fail the new checks and do not have a species call.
 

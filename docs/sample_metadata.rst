@@ -126,7 +126,8 @@ likely to contain some errors: if a sample has a sylph match with
 more than 99% abundance then that is the species call, otherwise the species
 is called as "unknown". This call is used for compressing the assemblies
 with Miniphy (it requires species calls), and so incorrect calls do not
-matter for this use case.
+matter for this use case. See the :doc:`species calls </species_id>` page
+for detailed information.
 
 
 Decontamination
