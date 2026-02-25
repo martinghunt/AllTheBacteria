@@ -6,25 +6,89 @@ Current status
 
 Date updated: 2025-06-30.
 
-Bacteria:
+Bacteria
+~~~~~~~~
 
-* the latest release is incremental release 2025-05
+The latest release is incremental release 2025-05
 
-* total assemblies = 2,763,297
+.. list-table::
+  :header-rows: 1
+  :widths: auto
+  :class: longtable
 
-    * Release 0.2: 1,932,812 (661,384 in the original 661k dataset, plus
-      1,271,428 new assemblies)
+  * - Release
+    - Assemblies
+    - Grand total
+  * - r0.2 [1]
+    - 1,932,812
+    - 1,932,812
+  * - Incremental 2024-08
+    - 507,565
+    - 2,440,377
+  * - Incremental 2025-05
+    - 322,920
+    - 2,763,297
 
-    * Incremental release 2024-08: 507,565
-
-    * Incremental release 2025-05: 322,920
+.. [1] 661,384 in the original 661k Blackwell dataset, plus 1,271,428 new assemblies
 
 
-Archaea:
+Post-assembly analysis status
 
-* the only release is 2024-07
+.. list-table::
+  :header-rows: 1
+  :widths: auto
+  :class: longtable
 
-* total assemblies: 815
+  * - Analysis
+    - r0.2
+    - 2024-08
+    - 2025-05
+  * - assembly-stats
+    - ✓
+    - ✓
+    - ✓
+  * - checkm2
+    - ✓
+    - ✓
+    - ✓
+  * - :doc:`Lexicmap index </lexicmap>` [1]
+    - ✓
+    - ✓
+    - ✗
+  * - sketchlib index [1]
+    - ✓
+    - ✓
+    - ✗
+  * - :doc:`Annotation </annotation>`
+    - ✓
+    - ✓
+    - ✗
+  * - :doc:`Antimicrobial resistance </amr>`
+    - ✓
+    - ✓
+    - ✗
+  * - :doc:`Species-specific typing </typing>`
+    - ✓
+    - ✓
+    - ✗
+  * - :doc:`Biosynthetic gene clusters </bgcs>`
+    - ✓
+    - ✓
+    - ✗
+  * - :doc:`Defense systems </defense>`
+    - ✓
+    - ✓
+    - ✗
+
+.. [1] The indexes are for r0.2 plus 2024-08 combined, not two separate indexes.
+
+
+
+
+Archaea
+~~~~~~~
+
+The only release is 2024-07, and has 815 assemblies.
 
 
 
@@ -48,8 +112,8 @@ we suggest you read this documentation, which has the relevant links to OSF,
 as opposed to going directly to OSF.
 
 
-Releases
---------
+Release Notes
+-------------
 
 The first batch of data is available as release 0.2. From then onwards we
 intend to make "incremental" releases, which contain new samples that are
@@ -124,10 +188,15 @@ assemblies.
 May 2025 update
 ~~~~~~~~~~~~~~~
 
-New samples/runs were processed adter incremental release 2024-08, making
+**Breaking change:** species calls from sylph results were made more stringent
+compared to previous releases. This means there are samples that had a species
+call pre-2025-05, but now fail the new checks and do not have a species call.
+
+New samples/runs were processed after incremental release 2024-08, making
 incremental release 2025-05.
 This means that the complete AllTheBacteria dataset is
 release 0.2 plus incremental releases 2024-08 and 2025-05.
+
 
 
 Future releases
