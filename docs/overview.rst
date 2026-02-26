@@ -5,7 +5,7 @@ Overview
 Current status
 --------------
 
-Date updated: 2025-06-30.
+Date updated: 2026-02-26.
 
 Bacteria
 ~~~~~~~~
