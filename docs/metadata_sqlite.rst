@@ -12,11 +12,11 @@ please see the :doc:`Metadata and QC </sample_metadata>` page.
 
 The 202505 SQLite database is in the file
 ``atb.metadata.202505.sqlite.xz``, available from OSF at:
-https://osf.io/f9jeh
+https://osf.io/h7wzy/files/my56u.
 
 Download in a terminal with::
 
-    wget -O atb.metadata.202505.sqlite.xz https://osf.io/download/f9jeh/
+    wget -O atb.metadata.202505.sqlite.xz https://osf.io/download/my56u/
 
 
 It has:
@@ -105,7 +105,7 @@ New runs/samples that passed all the metadata checks were processed through
 the assembly pipeline.
 
 To be included in the incremental release 2025-05, a sample/run must be in
-2025-05-06 (as well as the from the data it was first retrieved), and
+2025-05-06 (as well as the from the date it was first retrieved), and
 metadata must pass all the checks and be consistent across all sets of
 metadata. For example, a sample could have been
 processed in the 2024-10-07 batch. To be included in incremental release 2025-05
@@ -252,9 +252,11 @@ The columns of the table are:
   was successfully submitted to the ENA, otherwise it is ``NA``.
 * ``assembly_seqkit_sum``: the output of running ``seqkit sum`` on the
   assembly.
-* ``filter``: a list of filters that this sample fails, or ``PASS`` if it passed
-  all filters (similar to how the VCF filter column works). This reflects the
-  new filters, not those used initially to find samples to process. This means
+* ``asm_pipe_filter``: a list of filters that this sample fails, or ``PASS`` if
+  it passed all filters (similar to how the VCF filter column works). This is
+  onlt for the assembly pipeline. See also the columns ``sylph_filter``
+  and ``hq_filter``. This column uses the latest filters,
+  not those used initially to find samples to process. This means
   a sample could be in the 661k, release 0.2 or incremental releases
   but not have ``PASS`` in this column.
 * ``asm_fasta_on_osf``: ``0`` or ``1`` to indicate if an assembly FASTA file
@@ -269,6 +271,14 @@ The columns of the table are:
   which samples are in the 661k data set. Meaning that "r0.2" in this field
   means the sample is in release 0.2 but is not in the 661k set. Samples in the
   original 661k set have "661k" in this column.
+* ``scientific_name``: the ENA metadata scientific name. Some samples have
+  more than one run, and runs could have different entries, in which case
+  this is a semicolon-separated list. See also
+  the :doc:`Species Identification </species_id>` page.
+* ``sylph_species_pre_202505``: the species call made from parsing sylph output,
+  in releases before 2025-05
+* ``in_hq_pre_202505``: whether or not the sample was considered "high quality"
+  in releases before 2025-05.
 * ``sylph_species``: this is a species call from running sylph on the reads,
   using the method described in the :doc:`Species Identification </species_id>`
   page.
@@ -277,10 +287,8 @@ The columns of the table are:
   more than one species call that passed the filters;
   ``NO_SYLPH_RESULTS`` where sylph gave no output;
   ``SYLPH_RESULTS_FAIL`` where no sylph calls passed the filters.
-* ``scientific_name``: the ENA metadata `scientific name`. Some samples have
-  more than one run, and runs could have different entries, in which case
-  this is a semicolon-separated list. See also
-  the :doc:`Species Identification </species_id>` page.
+* ``hq_filter``: either PASS if the sample is considered high quality, or a
+  list of reasons it failed.
 * ``osf_tarball_filename``: the filename of the ``*.tar.xz`` file on OSF that
   contains the assembly FASTA file
 * ``osf_tarball_url``: the URL of the ``*.tar.xz`` file on OSF
@@ -288,7 +296,7 @@ The columns of the table are:
 * ``comments``: any comments related to reasons for filter fails.
 
 
-These are the possible filters in the ``filter`` column due to metadata fails:
+These are the possible filters in the ``asm_pip_filter`` column due to metadata fails:
 
 * ``NO_RUNS``: there are no runs that pass all checks, ie have ``pass`` = ``1``
   in the ``run`` table. It does not mean that there are literally zero
