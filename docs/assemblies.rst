@@ -83,11 +83,11 @@ Downloading assemblies from the ENA
 
 Nearly all of the assemblies have been accessioned in the ENA
 as "analysis" objects. The accessions are in the file
-``atb.metadata.202408.sqlite.assembly.tsv.xz``. It is a TSV format file of
+``atb.metadata.202505.sqlite.assembly.tsv.xz``. It is a TSV format file of
 the table ``assembly`` from the :doc:`SQLite metadata database </metadata_sqlite>`.
 The TSV file can be downloaded with::
 
-  wget -O atb.metadata.202408.sqlite.assembly.tsv.xz https://osf.io/download/sdx5m/
+  wget -O atb.metadata.202505.sqlite.assembly.tsv.xz https://osf.io/download/4kjh7/
 
 The relevant columns here are ``sample_accession`` and ``assembly_accession``.
 For example, sample ``SAMN23010837`` has the assembly accession
@@ -121,7 +121,7 @@ around 3.1TB. This is too large to sensibly put on OSF.
 The total size of the same data but in compressed archive files is 89GB.
 
 The latest list of all samples and their related file names are
-in the file `file_list.all.latest.tsv.gz <https://osf.io/4yv85>`_.
+in the file `file_list.all.latest.tsv.gz <https://osf.io/zxfmy/files/3xs6h>`_.
 This file should have all the information you need.
 Older files and files split by dataset are also available - see
 the folder "File Lists" in the top level of the `Assembly component on OSF
@@ -130,13 +130,23 @@ the folder "File Lists" in the top level of the `Assembly component on OSF
 The columns in this file are:
 
 * ``sample`` = the INSDC sample accession
-* ``species_sylph`` = inferred species call from running sylph on the reads (see below)
-* ``species_miniphy`` = the name miniphy gave to the species (see below)
+* ``sylph_species`` = inferred species call from running sylph on the reads.
+  This is using the "post-202505" method on *all* of the samples. Meaning that
+  species calls in files from 202505 onwards are not the same as in files
+  before 202505. See the :doc:`species calls </species_id>` page for more
+  details
 * ``filename_in_tar_xz`` = the FASTA filename for this sample inside the tar.xz file
 * ``tar_xz`` = the name of the tar.xz file where this sample's FASTA lives
 * ``tar_xz_url`` = URL of `tar_xz`
 * ``tar_xz_md5`` = MD5 sum of `tar_xz`
 * ``tar_xz_size_MB`` = size of the `tar_xz` file in MB
+
+Older files (pre-202505) have these two columns:
+
+* ``species_sylph`` = inferred species call from running sylph on the reads,
+  using the pre-202505 method.
+* ``species_miniphy`` = the name miniphy gave to the species
+
 
 If you want to download the archives in bulk, then use the
 ``tar_xz_url`` column to get the urls, and ``tar_xz`` for what
@@ -145,34 +155,40 @@ filename in the download URL.
 
 Here's an example of how to get the wget commands to run::
 
-    $ gunzip -c file_list.all.latest.tsv.gz  | awk -F"\t" 'NR>1 {print "wget -O "$5" "$6}' | uniq | head -n3
-    wget -O atb.assembly.r0.2.batch.1.tar.xz     https://osf.io/download/667142936b6c8e33f404cce7/
-    wget -O atb.assembly.r0.2.batch.2.tar.xz https://osf.io/download/667142d10f8c8017b03c96b0/
-    wget -O atb.assembly.r0.2.batch.3.tar.xz https://osf.io/download/667142c877ff4c5f1ee04625/
+    $ gunzip -c file_list.all.latest.tsv.gz | awk -F"\t" 'NR>1 {print "wget -O "$4" "$5}' | uniq | head -n3
+    wget -O atb.assembly.r0.2.batch.127.tar.xz https://osf.io/download/6671719165e1de5eb5893c28/
+    wget -O atb.assembly.r0.2.batch.136.tar.xz https://osf.io/download/66717ce2d835c439e94cdf1e/
+    wget -O atb.assembly.r0.2.batch.625.tar.xz https://osf.io/download/6672f5a7d835c43c944ce4e8/
 
-If you just want one sample, for example sample SAMD00555951,
-then this is the info in `file_list.all.latest.tsv.gz <https://osf.io/4yv85>`_::
 
-    sample              SAMD00555951
-    species_sylph       Acinetobacter baumannii
-    species_miniphy     acinetobacter_baumannii
-    filename_in_tar_xz  atb.assembly.incr_release.202408.batch.1/SAMD00555951.fa
-    tar_xz              atb.assembly.incr_release.202408.batch.1.tar.xz
-    tar_xz_url          https://osf.io/download/66d9a283a8ea15b31e77b451/
-    tar_xz_md5          2e5d42de7f7f047245b4c4b78e4dabaf
-    tar_xz_size_MB      61.36
+If you just want one sample, for example sample SAMD00000355,
+then this is the info in `file_list.all.latest.tsv.gz <https://osf.io/zxfmy/files/3xs6h>`_::
+
+    sample              SAMD00000355
+    sylph_species       Streptococcus pyogenes
+    filename_in_tar_xz  atb.assembly.r0.2.batch.625/SAMD00000355.fa
+    tar_xz              atb.assembly.r0.2.batch.625.tar.xz
+    tar_xz_url          https://osf.io/download/6672f5a7d835c43c944ce4e8/
+    tar_xz_md5          444ff0fc9e860ab374bdc6fe9d9bd9f5
+    tar_xz_size_MB      21.5
 
 The wget command to get the tar file would be::
 
-    wget -O atb.assembly.incr_release.202408.batch.1.tar.xz https://osf.io/download/66d9a283a8ea15b31e77b451/
+    wget -O atb.assembly.r0.2.batch.625.tar.xz https://osf.io/download/6672f5a7d835c43c944ce4e8/
 
 Extract the FASTA with::
 
-    tar xf atb.assembly.incr_release.202408.batch.1.tar.xz atb.assembly.incr_release.202408.batch.1/SAMD00555951.fa
+    tar xf atb.assembly.r0.2.batch.625.tar.xz atb.assembly.r0.2.batch.625/SAMD00000355.fa
 
 
 Species calls and assembly batches
 ----------------------------------
+
+The text below only applies to 2024-08 and earlier. It is only relevant
+if you are using old files. For 2025-05, there is only one species call
+in the assembly file, which is made from parsing sylph results as
+described :doc:`here </species_id>`.
+
 
 Why are species calls included in the assembly file? For convenience, to allow
 getting all assemblies for a particular species. Note that one batch
