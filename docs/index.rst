@@ -29,6 +29,7 @@ https://github.com/AllTheBacteria/AllTheBacteria/issues
    amr
    defense
    bgcs
+   hypothetical_protein_structures
    typing
    archaea
    lexicmap

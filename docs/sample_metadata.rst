@@ -18,65 +18,61 @@ pipeline. They include:
 * "High quality" samples (defined below)
 
 
-Metadata in flat files and SQLite database
-------------------------------------------
+Metadata availability
+---------------------
 
 The metadata are available in two forms:
 
 1. Flat files. These are described below. This is how all of the data
    was released when we first uploaded everything to OSF in 2024.
-2. In an :doc:`SQLite database </metadata_sqlite>`, made in May 2025.
-   It gathers together all
-   of the ENA metadata, assembly metadata, plus slpyh, checkm2 and
-   assembly stats output. It is the same information that is in the flat files,
-   except it contains more stringent checks on the metadata, and so more
-   samples are flagged as possibly unreliable. In the future, these new checks
-   will be incorporated into a redfined "high quality" set that will be smaller
-   than the current high quality set.
-
-If you want to get detailed information on sequencing runs and samples, or
-more stringent sanity checks on the metadata, then
-the SQLite database is the best place to look. The details are complicated.
-It is all described in a separate page: :doc:`SQLite metadata </metadata_sqlite>`
+2. In an :doc:`SQLite database </metadata_sqlite>`, available for releases
+   2024-08 and 2025-05.
+   It gathers together all of the ENA metadata, assembly metadata, plus slpyh,
+   checkm2 and assembly stats output.
+   The 2024-08 database contains more stringent checks on the metadata, and
+   so more samples are flagged as possibly unreliable than in the flat files.
+   From 2025-05 onwards, the database has the same information as the flat files.
 
 
-
-Metadata in flat files
-----------------------
-
-The latest complete set of data is release 0.2 plus incremental release
-2024-08.  The latest metadata files for this set are in the
-``Aggregated/Latest_2024-08/`` folder of
-the `Metadata component <https://osf.io/h7wzy/>`_.
-
-The latest status of all processed samples is in the file
-`status.202408.tsv.gz <https://osf.io/vrekj>`_.
-It tracks the result of trying to download the reads, run sylph, assemble,
-and then human decontamination.
-The columns are:
-
-* Sample: the sample accession (SAM...)
-* Status: status of the sample. This is either "PASS", meaning that the pipeline
-  finished successfully and we have an assembly, or "FAIL:..." if it failed
-  and for what reason
-* Dataset: the dataset the sample belongs to
-* Comments: any other comments
-
-Older data
-----------
-
-We recommend you use the complete data for all samples, since it has
-everything in one place. However, older metadata files are also available,
-in folders named by release. At the time of writing these are 0.1
-(which was replaced by 0.2), 0.2, and incremental release 2024-08.
+This page describes the flat files. It is simpler than the database.
+The details of the metadata and the SQLite database are complicated, and
+are described in a separate page: :doc:`SQLite metadata </metadata_sqlite>`
 
 
 
 Metadata files
 --------------
 
-Each folder (per dataset, or the latest complete dataset) has the
-metadata files described below.
+
+The latest complete set of data is release 0.2 plus incremental releases
+2024-08 and 2025-05.  The latest metadata files for this set are in the
+``Aggregated/Latest_2025-05/`` folder of
+the `Metadata component <https://osf.io/h7wzy/>`_.
+
+
+
+Status file
+~~~~~~~~~~~
+
+The latest status of all processed samples is in the file
+`status.202505.tsv.gz <https://osf.io/h7wzy/files/6hw7t>`_.
+It tracks the result of trying to download the reads, run sylph, assemble,
+and then human decontamination.
+The columns are:
+
+* ``Sample``: the sample accession (SAM...)
+* ``Status``: status of the sample. This is either "PASS", meaning that the pipeline
+  finished successfully and we have an assembly, or "FAIL:..." if it failed
+  and for what reason
+* ``Dataset``: the dataset the sample belongs to
+* ``HQ_filter``: "PASS" means this sample is in the "high quality" dataset
+* ``Assembly_on_OSF``: ``1`` or ``0`` to indicate if the assembly is available
+  from OSF (and AWS). The complete set of AllTheBacteria assemblies is the
+  samples with ``1`` in this column.
+
+Note, the older status file for 2024-08 did not have the ``HQ_filter``,
+``Assemby_on_OSF`` columns, and had an extra column ``Comments``.
+
 
 
 Sample lists
@@ -94,14 +90,14 @@ fails. That sample would have sylph results, but no assembly, and so does not
 appear in ``sample_list.txt.gz``.
 
 
-
 ENA metadata
 ~~~~~~~~~~~~
 
 When processing new samples, the first thing we do is download all metadata
-from the ENA for all bacteria. The results are in ``ena_metadata.tsv.gz``,
+from the ENA for all bacteria. The results are in ``ena_metadata.YYYYMMDD.tsv.gz``
+(where YYYYMMDD is the download date from the ENA)
 providing a snapshot at the time of download. These files are only included
-with each release. We do not make an aggregated file across releases, since
+with each individual release. We do not make an aggregated file across releases, since
 it does not really make sense to do so.
 
 
@@ -121,12 +117,18 @@ Some samples have no matches and there is no output - these samples are listed
 in the file ``sylph.no_matches.tsv.gz``.
 
 We also try to make a species call from the sylph output, which can be found
-in ``species_calls.tsv.gz``. This is made using a simple method and is
-likely to contain some errors: if a sample has a sylph match with
-more than 99% abundance then that is the species call, otherwise the species
-is called as "unknown". This call is used for compressing the assemblies
-with Miniphy (it requires species calls), and so incorrect calls do not
-matter for this use case.
+in ``species_calls.tsv.gz``. The method used to make these calls has changed
+over time. Please see :doc:`species calls </species_id>` for more information.
+
+* r0.2 and incremental release 2024-08 used a naive method of requiring a
+  sylph match with more than 99% abundance
+
+* Incremental release 2025-05 used a more stringent method. The aggregated
+  file ``species_calls.tsv.gz`` for everything up to and including release
+  2025-05 has the old calls in the column ``sylph_species_pre_202505`` and
+  the old "high quality" call in ``in_hq_pre_202505``. The updated species
+  and high quality calls are in the columns ``sylph_species``, ``HQ``.
+
 
 
 Decontamination
@@ -159,7 +161,8 @@ are the INSDC sample accession IDs.
 High quality dataset
 ~~~~~~~~~~~~~~~~~~~~
 
-We define a high quality dataset for each release. This is samples that:
+We define a high quality dataset for each release. For releases up to
+and including 2024-08, the requirements were:
 
 * Have a sylph call with at least 99 percent minimum abundance.
   If a sample has more than one call (eg where it has more than one
@@ -170,5 +173,8 @@ We define a high quality dataset for each release. This is samples that:
 * Maximum number of contigs 2,000
 * Minimum N50 2,000
 
-These samples are listed in ``hq_set.samples_list.txt.gz``. The rejected
-samples are listed in ``hq_set.removed_samples.tsv.gz``.
+From 2025-05 onwards, the sylph parsing was made stricter, as described
+:doc:`here </species_id>`. All other rules remained the same.
+
+The high quality samples are listed in ``hq_set.samples_list.txt.gz``.
+The rejected samples are listed in ``hq_set.removed_samples.tsv.gz``.

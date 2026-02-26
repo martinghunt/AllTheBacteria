@@ -240,3 +240,13 @@ This is an incremental release, adding 507,565 new assemblies.
 Sequencing metadata from the ENA was downloaded on 2024-08-01,
 and all eligible samples (ie paired Illumina, WGS etc) that were not already
 in release 0.2 were processed.
+
+
+
+Incremental Release 2025-05
+===========================
+
+This is an incremental release, adding 322,920 new assemblies.
+Sequencing metadata from the ENA was downloaded on 2025-05-05,
+and all eligible samples (ie paired Illumina, WGS etc) that were not already
+in previous releases were processed.
