@@ -1,0 +1,28 @@
+{
+  "release": "YYYYMM",
+  "current_source": "ena_YYYYMMDD",
+  "sources": [
+    {
+      "name": "ena_older_complete",
+      "path": "/path/to/older-complete-snapshot.tsv.xz",
+      "date": "YYYY-MM-DD",
+      "kind": "complete",
+      "precedence": 10
+    },
+    {
+      "name": "ena_processing_time_partial",
+      "path": "/path/to/processing-time-records.tsv.xz",
+      "date_column": "obtained_date",
+      "exclude_columns": ["obtained_date"],
+      "kind": "partial",
+      "precedence": 20
+    },
+    {
+      "name": "ena_YYYYMMDD",
+      "path": "/path/to/current-complete-snapshot.tsv.gz",
+      "date": "YYYY-MM-DD",
+      "kind": "complete",
+      "precedence": 30
+    }
+  ]
+}

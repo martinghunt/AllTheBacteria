@@ -1,0 +1,14 @@
+{
+  "release": "YYYYMM",
+  "previous_latest": "/path/to/atb.metadata.PREVIOUS.ena_latest.tsv.xz",
+  "current_source": "ena_YYYYMMDD",
+  "sources": [
+    {
+      "name": "ena_YYYYMMDD",
+      "path": "/path/to/current-complete-snapshot.tsv.gz",
+      "date": "YYYY-MM-DD",
+      "kind": "complete",
+      "precedence": 10
+    }
+  ]
+}
