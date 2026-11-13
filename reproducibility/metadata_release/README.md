@@ -1,5 +1,78 @@
 # AllTheBacteria release metadata
 
+This directory contains the scripts used to prepare the metadata for an
+AllTheBacteria release. Metadata describes each genome assembly: which sample
+and sequencing reads it came from, its quality checks, and where its files can
+be downloaded. These scripts prepare those records; they do not assemble the
+genomes themselves.
+
+The aim is to make releases reproducible and easier to check. Information in
+the European Nucleotide Archive (ENA) can change after an assembly was made:
+records may be updated or removed, and links between samples and sequencing
+runs may change. Here, a sample is the biological material being sequenced,
+and a run is a set of sequencing reads. Some older assemblies used several
+runs from one sample.
+
+The tools bring together previous release metadata, saved ENA snapshots and
+results from assembly and quality checks. They help to:
+
+- track new and changed ENA records while retaining older information;
+- apply release filters and identify duplicate assemblies;
+- record which assemblies belong to a release and where their metadata came from;
+- build the release database, tab-separated metadata files and AWS download index.
+
+This directory is mainly for people preparing a release or checking how one
+was made. To use the published genomes and metadata, start with the
+[AllTheBacteria documentation](https://allthebacteria.org/docs/). The sections
+below describe the individual tools and their inputs. Release-specific notes
+are in `releases/`.
+
+## AWS file catalogue and bucket checksums
+
+Build a master AWS file index, a separate individual-FASTA index, and root
+`MD5SUMS` manifests with:
+
+```bash
+python3 -m atb_release_metadata.aws_file_index \
+  --osf-index all_atb_files.tsv \
+  --aws-lists aws_file_lists \
+  --assembly-db release_1/atb.metadata.r1.sqlite \
+  --cache-dir aws_metadata_build/cache \
+  --work-db aws_metadata_build/objects.sqlite \
+  --output-dir aws_metadata \
+  --lexicmap-md5 lexic.2024.snapshot.md5
+```
+
+`aws_file_lists` contains the supplied `buckets` file and recursive S3 listings
+named `<bucket>.list`. The assemblies bucket may be omitted from those listings:
+its latest available S3 inventory is used, supplemented by known FASTA URLs in
+the release database. Retain the cache and input listings to reproduce this
+particular build. The newest assembly inventory among the supplied listings is
+selected; changing the listings can select a different inventory. Automated
+objects under `allthebacteria-assemblies/assemblies-list/` in the metadata
+bucket are used as build inputs, then excluded from the published file
+catalogues and bucket MD5SUMS.
+
+Checksums come from unambiguous, size-matching OSF records, published checksum
+manifests, or downloaded small files. Large data files are not rehashed.
+Individual assemblies have no generated MD5 manifest; their catalogue MD5
+values are `NA`. The optional `--lexicmap-md5` input is a fixed copy of the
+checksum-job output. Only paths containing `/2024-08/` are mapped to the
+`202408/` AWS prefix. All listed LexicMap objects must be covered; unlisted
+source files are reported and ignored. Without this input, LexicMap is also
+excluded from MD5 manifests. Capture the input before use if the checksum job
+is still appending other releases. ETags are kept separately and never treated as MD5s.
+`all_atb_files.tsv` excludes the individual FASTAs, which are listed in
+`assembly_files.tsv`. Both have exactly these columns: `filename`, `url`,
+`md5`, `size_bytes`, `size(MB)`, `bucket`. The MB column uses MiB
+(1,048,576 bytes), rounded to two decimal places for compatibility with the
+old index. Each TSV also has an identical gzip level 9 version.
+The output report records input hashes and checksum policies. Upload each
+generated `<bucket>/MD5SUMS` to that bucket's root before publishing the
+catalogue, which includes these generated files. The tool performs no uploads.
+
+## ENA release metadata
+
 This directory contains correctness-first tools for making reproducible
 AllTheBacteria metadata releases. The first implemented stage builds one
 latest-known ENA record per run while retaining records for runs that disappear
@@ -223,14 +296,13 @@ together whenever inputs change.
 
 Public reports and database provenance identify files by basename and hash;
 they do not contain build-machine paths. The checksum finalizer verifies the
-compressed database and writes both `SHA256SUMS` and `MD5SUMS` over the same
-publication files. The uncompressed SQLite stays available locally; publish
-its compressed copy. Both manifests exclude the uncompressed file and include
+compressed database and writes `MD5SUMS` for the publication files. The uncompressed SQLite stays available locally; publish
+its compressed copy. The manifest excludes the uncompressed file and includes
 the two separate ENA downloads. The versioned
 `atb_release_metadata/release_1_README.md` template is
 copied into the publication directory by the schema stage.
 If the public JSON report is edited to add verified source
-URLs, rerun the finalizer to refresh both manifests.
+URLs, rerun the finalizer to refresh the manifest.
 
 The history extension preserves frozen assembly/QC/run/AGC table fingerprints.
 `assembly_run_provenance` records processing evidence where established;

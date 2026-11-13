@@ -46,10 +46,9 @@ class PortableReleaseTest(unittest.TestCase):
             for line in (root/'MD5SUMS').read_text().splitlines():
                 digest, filename = line.split()
                 self.assertEqual(digest, hashlib.md5((root/filename).read_bytes()).hexdigest())
-            self.assertEqual(len((root/'SHA256SUMS').read_text().splitlines()), len((root/'MD5SUMS').read_text().splitlines()))
-            self.assertIn(evidence.name, (root/'SHA256SUMS').read_text())
+            self.assertFalse((root/'SHA256SUMS').exists())
             self.assertIn(evidence.name, (root/'MD5SUMS').read_text())
-            names = {line.split()[1] for line in (root/'SHA256SUMS').read_text().splitlines()}
+            names = {line.split()[1] for line in (root/'MD5SUMS').read_text().splitlines()}
             self.assertIn(separate.name,names)
             self.assertIn(database.name+'.xz',names)
             self.assertNotIn(database.name,names)

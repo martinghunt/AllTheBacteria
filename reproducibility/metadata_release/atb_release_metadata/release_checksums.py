@@ -47,7 +47,6 @@ def finalize(output_dir):
     readme = output_dir / 'README.md'
     if readme.exists():
         entries.append((sha256_file(readme), readme.name))
-    (output_dir / 'SHA256SUMS').write_text(''.join(f'{digest}  {name}\n' for digest, name in sorted(entries, key=lambda item: item[1])))
     md5_entries = []
     for _, name in sorted(entries, key=lambda item: item[1]):
         digest = hashlib.md5(usedforsecurity=False)
